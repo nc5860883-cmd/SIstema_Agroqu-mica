@@ -10,7 +10,7 @@ class GrupoQuimico(models.Model):
 
     def __str__(self):
         return self.Nombre_grupo_quimico
-gi
+
 
 class TipoProducto(models.Model):
     ID_Tipo_producto = models.AutoField(primary_key=True)

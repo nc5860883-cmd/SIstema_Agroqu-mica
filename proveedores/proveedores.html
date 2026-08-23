@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Proveedores</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; background:#0F1626; color:#E2E8F0; margin:0; padding:40px; }
+        h1 { color:#06B6D4; }
+        .total { color:#B8C0CC; margin-bottom:20px; }
+        table { border-collapse:collapse; width:100%; max-width:900px; }
+        th, td { padding:10px 14px; text-align:left; border-bottom:1px solid #2A3550; }
+        th { background:#1A2238; color:#06B6D4; }
+        tr:hover { background:#1A2238; }
+        .vacio { color:#B8C0CC; font-style:italic; }
+    </style>
+</head>
+<body>
+    <h1>Lista de Proveedores</h1>
+    <p class="total">Total de proveedores: {{ total }}</p>
+
+    {% if proveedores %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Email</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proveedor in proveedores %}
+                    <tr>
+                        <td>{{ proveedor.ID_Proveedor }}</td>
+                        <td>{{ proveedor.Nombre_proveedor }}</td>
+                        <td>{{ proveedor.Telefono_proveedor }}</td>
+                        <td>{{ proveedor.Direccion_proveedor }}</td>
+                        <td>{{ proveedor.Email_proveedor }}</td>
+                        <td>{{ proveedor.Estado_proveedor }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="vacio">Todavía no hay proveedores cargados. Agrégalos desde /admin.</p>
+    {% endif %}
+</body>
+</html>

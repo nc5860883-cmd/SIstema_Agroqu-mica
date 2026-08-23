@@ -9,8 +9,7 @@ class GrupoQuimico(models.Model):
         verbose_name_plural = "Grupos Químicos"
 
     def __str__(self):
-        return self.nombre_grupo_quimico
-
+        return self.Nombre_grupo_quimico
 
 class TipoProducto(models.Model):
     id_tipo_producto = models.AutoField(primary_key=True)

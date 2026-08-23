@@ -1,110 +1,110 @@
 from django.db import models
 
 class GrupoQuimico(models.Model):
-    ID_Grupo_quimico = models.AutoField(primary_key=True)
-    Nombre_grupo_quimico = models.CharField(max_length=60)
-    Descripcion_grupo_quimico = models.CharField(max_length=200)
+    id_grupo_quimico = models.AutoField(primary_key=True)
+    nombre_grupo_quimico = models.CharField(max_length=60)
+    descripcion_grupo_quimico = models.CharField(max_length=200)
 
     class Meta:
         verbose_name_plural = "Grupos Químicos"
 
     def __str__(self):
-        return self.Nombre_grupo_quimico
-gi
+        return self.nombre_grupo_quimico
+
 
 class TipoProducto(models.Model):
-    ID_Tipo_producto = models.AutoField(primary_key=True)
-    Nombre_producto = models.CharField(max_length=50)
+    id_tipo_producto = models.AutoField(primary_key=True)
+    nombre_producto = models.CharField(max_length=50)
 
     class Meta:
         verbose_name_plural = "Tipos de Productos"
 
     def __str__(self):
-        return self.Nombre_producto
+        return self.nombre_producto
 
 
 class Producto(models.Model):
-    ID_Productos = models.AutoField(primary_key=True)
-    ID_Tipo_producto = models.ForeignKey(TipoProducto, on_delete=models.CASCADE, db_column='ID_Tipo_producto')
-    Nombre_producto = models.CharField(max_length=50)
-    Descripcion_producto = models.CharField(max_length=100)
-    Fecha_vencimiento = models.DateField()
-    Precio = models.DecimalField(max_digits=10, decimal_places=2)
+    id_producto = models.AutoField(primary_key=True)
+    tipo_producto = models.ForeignKey(TipoProducto, on_delete=models.CASCADE)
+    nombre_producto = models.CharField(max_length=50)
+    descripcion_producto = models.CharField(max_length=100)
+    fecha_vencimiento = models.DateField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.Nombre_producto
+        return self.nombre_producto
 
 
 class Proveedor(models.Model):
-    ID_Proveedor = models.AutoField(primary_key=True)
-    Nombre_proveedor = models.CharField('Nombre', max_length=50)
-    Telefono_proveedor = models.CharField('Teléfono', max_length=20)
-    Direccion_proveedor = models.CharField('Dirección', max_length=30)
-    Email_proveedor = models.CharField('Email', max_length=50)
-    Estado_proveedor = models.CharField('Estado', max_length=20)
+    id_proveedor = models.AutoField(primary_key=True)
+    nombre_proveedor = models.CharField('Nombre', max_length=50)
+    telefono_proveedor = models.CharField('Teléfono', max_length=20)
+    direccion_proveedor = models.CharField('Dirección', max_length=30)
+    email_proveedor = models.CharField('Email', max_length=50)
+    estado_proveedor = models.CharField('Estado', max_length=20)
 
     class Meta:
         verbose_name = 'Proveedor'
         verbose_name_plural = 'Proveedores'
-        ordering = ['Nombre_proveedor']
+        ordering = ['nombre_proveedor']
 
     def __str__(self):
-        return f"{self.Nombre_proveedor} ({self.Estado_proveedor})"
+        return f"{self.nombre_proveedor} ({self.estado_proveedor})"
 
 
 class ProductoXGrupoQuimico(models.Model):
-    ID_Producto = models.ForeignKey(Producto, on_delete=models.CASCADE, db_column='ID_Producto')
-    ID_Grupo_quimico = models.ForeignKey(GrupoQuimico, on_delete=models.CASCADE, db_column='ID_Grupo_quimico')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    grupo_quimico = models.ForeignKey(GrupoQuimico, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = (('ID_Producto', 'ID_Grupo_quimico'),)
+        unique_together = (('producto', 'grupo_quimico'),)
 
 
 class ProductoXProveedor(models.Model):
-    ID_Producto = models.ForeignKey(Producto, on_delete=models.CASCADE, db_column='ID_Producto')
-    ID_Proveedores = models.ForeignKey(Proveedor, on_delete=models.CASCADE, db_column='ID_Proveedores')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = (('ID_Producto', 'ID_Proveedores'),)
+        unique_together = (('producto', 'proveedor'),)
 
 
 class Stock(models.Model):
-    ID_Stock = models.AutoField(primary_key=True)
-    ID_Producto = models.ForeignKey(Producto, on_delete=models.CASCADE, db_column='ID_Producto')
-    Cantidad_stock = models.IntegerField()
-    Stock_minimo = models.IntegerField()
+    id_stock = models.AutoField(primary_key=True)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad_stock = models.IntegerField()
+    stock_minimo = models.IntegerField()
 
 
 class Alerta(models.Model):
-    ID_Alerta = models.AutoField(primary_key=True)
-    ID_Stock = models.ForeignKey(Stock, on_delete=models.CASCADE, db_column='ID_Stock')
-    Mensaje = models.CharField(max_length=255)
-    Fecha_hora_alerta = models.DateTimeField()
+    id_alerta = models.AutoField(primary_key=True)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    mensaje = models.CharField(max_length=255)
+    fecha_hora_alerta = models.DateTimeField(auto_now_add=True)
 
 
 class TipoEmpleado(models.Model):
-    ID_Tipo_empleado = models.AutoField(primary_key=True)
-    Nombre_tipo_empleado = models.CharField(max_length=50)
+    id_tipo_empleado = models.AutoField(primary_key=True)
+    nombre_tipo_empleado = models.CharField(max_length=50)
 
 
 class Empleado(models.Model):
-    ID_Empleado = models.AutoField(primary_key=True)
-    Nombre_empleado = models.CharField(max_length=50)
-    Apellido_empleado = models.CharField(max_length=50)
-    Telefono_empleado = models.CharField(max_length=20)
-    Email_empleado = models.CharField(max_length=50)
-    ID_Tipo_empleado = models.ForeignKey(TipoEmpleado, on_delete=models.CASCADE, db_column='ID_Tipo_empleado')
+    id_empleado = models.AutoField(primary_key=True)
+    nombre_empleado = models.CharField(max_length=50)
+    apellido_empleado = models.CharField(max_length=50)
+    telefono_empleado = models.CharField(max_length=20)
+    email_empleado = models.CharField(max_length=50)
+    tipo_empleado = models.ForeignKey(TipoEmpleado, on_delete=models.CASCADE)
 
 
 class TipoMovimiento(models.Model):
-    ID_Tipo_movimiento = models.AutoField(primary_key=True)
-    Nombre_tipo_movimiento = models.CharField(max_length=50)
+    id_tipo_movimiento = models.AutoField(primary_key=True)
+    nombre_tipo_movimiento = models.CharField(max_length=50)
 
 
 class MovimientoStock(models.Model):
-    ID_Movimiento_stock = models.AutoField(primary_key=True)
-    ID_Empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, db_column='ID_Empleado')
-    ID_Tipo_movimiento = models.ForeignKey(TipoMovimiento, on_delete=models.CASCADE, db_column='ID_Tipo_movimiento')
-    ID_Stock = models.ForeignKey(Stock, on_delete=models.CASCADE, db_column='ID_Stock')
-    Fecha_hora_movimiento = models.DateTimeField()
-    Cantidad = models.IntegerField()
+    id_movimiento_stock = models.AutoField(primary_key=True)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    tipo_movimiento = models.ForeignKey(TipoMovimiento, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    fecha_hora_movimiento = models.DateTimeField(auto_now_add=True)
+    cantidad = models.IntegerField()

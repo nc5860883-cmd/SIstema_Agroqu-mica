@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Stock</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; background:#0F1626; color:#E2E8F0; margin:0; padding:40px; }
+        h1 { color:#06B6D4; }
+        .total { color:#B8C0CC; margin-bottom:20px; }
+        table { border-collapse:collapse; width:100%; max-width:800px; }
+        th, td { padding:10px 14px; text-align:left; border-bottom:1px solid #2A3550; }
+        th { background:#1A2238; color:#06B6D4; }
+        tr:hover { background:#1A2238; }
+        .vacio { color:#B8C0CC; font-style:italic; }
+    </style>
+</head>
+<body>
+    <h1>Control de Stock</h1>
+    <p class="total">Total de registros de stock: {{ total }}</p>
+
+    {% if stocks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Stock</th>
+                    <th>Producto</th>
+                    <th>Cantidad Stock</th>
+                    <th>Stock Mínimo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in stocks %}
+                    <tr>
+                        <td>{{ item.ID_Stock }}</td>
+                        <td>{{ item.ID_Producto.Nombre_producto }}</td>
+                        <td>{{ item.Cantidad_stock }}</td>
+                        <td>{{ item.Stock_minimo }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="vacio">Todavía no hay ítems en stock. Agrégalos desde /admin.</p>
+    {% endif %}
+</body>
+</html>
